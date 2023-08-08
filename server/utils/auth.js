@@ -7,7 +7,7 @@ const expiration = '2h';
 module.exports = {
   AuthenticationErro: new GraphQLError('Could not authenticate user.', {
     extensions: {
-       code: 'UNAUTHENTICATED',ç
+       code: 'UNAUTHENTICATED',
        },
   }),
   // function for our authenticated routes

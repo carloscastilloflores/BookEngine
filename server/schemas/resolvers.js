@@ -41,16 +41,42 @@ const resolvers = {
       const token = signToken(user);
 
       return { token, user };
-    }
+    },
+
 // Save a book to user's savedBooks 
 //1. Define an Input Type, 
 //2. Update Schema 
 //3. Implement the resolver 
 
-
+    addBook: async (parent, { bookInfo }, context) => {
+       // Check if there's an authenticated user in the context
+      if (context.user) {
+        const updatedUser = await User.findOneAndUpdate( 
+          // Find the user by their _id and update their data
+          { _id: context.user._id },
+          // $push operation adds the provided bookInfo to the savedBooks array
+          { $push: {savedBooks: bookInfo } },
+          // new: true ensures that the updated user is returned as the result
+          { new: true}
+        );
+      }
+        // Return the updated user with the added book
+      return updatedUser;
+    },
+    removeBook: async (parent, {bookId}, context) => {
+      if (context.user) {
+        const updatedUser = await User.findOneAndUpdate(
+          { _id: context.user._id }
+          { $pull: {savedBooks: { bookId } } },
+          { new: true }
+        );
+        return updatedUser;
+      }
+      throw new AuthenticationError('You have to be logged in'); 
+    },
 // Remove a book from 'savedBooks
-  }
-}
+  },
+};
 
 module.exports = resolvers;
 
