@@ -48,7 +48,7 @@ const resolvers = {
 //2. Update Schema 
 //3. Implement the resolver 
 
-    addBook: async (parent, { bookInfo }, context) => {
+    saveBook: async (parent, { bookInfo }, context) => {
        // Check if there's an authenticated user in the context
       if (context.user) {
         const updatedUser = await User.findOneAndUpdate( 
