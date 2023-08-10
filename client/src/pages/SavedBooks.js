@@ -20,7 +20,7 @@ import { removeBookId } from '../utils/localStorage';
 const SavedBooks = () => {
 
   // Removed useEffect Hook 
-  // const [userData, setUserData] = useState({});
+  const [setUserData] = useState({});
 
   const { loading, data } = useQuery(GET_ME);
   const userData = data?.me || [];
@@ -65,16 +65,16 @@ const SavedBooks = () => {
     }
 
     try {
-      await deleteBook({
+      const { data } = await deleteBook({
         variables: { bookId: bookId },
       })
       // const response = await deleteBook(bookId, token);
 
-      if (!response.ok) {
+      if (!data.ok) {
         throw new Error('something went wrong!');
       }
 
-      const updatedUser = await response.json();
+      const updatedUser = await data.json();
       setUserData(updatedUser);
       // upon success, remove book's id from localStorage
       removeBookId(bookId);
