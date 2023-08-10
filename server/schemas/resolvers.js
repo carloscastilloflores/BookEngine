@@ -3,19 +3,29 @@ const { signToken, AuthenticationError } = require('../utils/auth');
 
 const resolvers = {
   Query: {
-    users: async () => {
-      return User.find().populate('savedBooks');
-    }, 
-    // Get single user by either id or their username 
-    user: async (parent, { username }) =>{
-      return User.findOne({ username }).populate('savedBooks');
+    me: async (parent, args, context) => {
+      if (context.user) {
+        const userData = await User.findOne({ _id: context.user._id }).select(
+          "-__v -password"
+        );
+        return userData;
+      }
+      throw new AuthenticationError;
+      
     },
-    email: async (parent, { email }) => {
-      return User.findOne({ email }).populate('')
-    }, 
-    books: async (parent, { username }) => {
-      return Book.find(arams).sort({ createdAt: -1 });
-    }
+    // users: async () => {
+    //   return User.find().populate('savedBooks');
+    // }, 
+    // // Get single user by either id or their username 
+    // user: async (parent, { username }) =>{
+    //   return User.findOne({ username }).populate('savedBooks');
+    // },
+    // email: async (parent, { email }) => {
+    //   return User.findOne({ email }).populate('')
+    // }, 
+    // books: async (parent, { username }) => {
+    //   return Book.find(params).sort({ createdAt: -1 });
+    // }
   },
   
   Mutation: {
