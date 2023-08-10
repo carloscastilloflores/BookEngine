@@ -33,8 +33,8 @@ const SignupForm = () => {
 
     try {
       const { data } = await addUser({
-        variables: { ...userFormData }
-      })
+        variables: { ...userFormData },
+      });
         // variables: { _id: id, username: username, password: password },
 
       // const response = await createUser(userFormData);
