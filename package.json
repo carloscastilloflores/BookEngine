@@ -3,7 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "main": "server/server.js",
-  "proxy": "http://localhost:3001",
+  "proxy": {
+    "/auth/google": {
+      "target": "http://127.0.0.1:3001"
+    }
+  },
   "scripts": {
     "start": "node server/server.js --ignore client",
     "develop": "concurrently \"cd server && npm run watch\" \"cd client && npm start\"",
