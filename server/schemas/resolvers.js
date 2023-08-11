@@ -45,8 +45,9 @@ const resolvers = {
       const user = await User.findOne({ email });
 
       if (!user) {
-        throw new AuthenticationErro('Invalid email or password');
-      };
+        throw  AuthenticationError;
+      }
+      
       const correctPw = await user.isCorrectPassword(password);
       if (!correctPw) {
         throw new AuthenticationError('Invalid email or password');;
