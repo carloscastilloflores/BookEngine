@@ -4,12 +4,11 @@ const { AuthenticationError } = require('apollo-server-express')
 
 const resolvers = {
   Query: {
-    me: async (parent, { args }, context) => {
+    me: async (parent, args, context) => {
       if (context.user) {
         const userData = await User
         .findOne({ _id: context.user._id })
-        .select(
-          "-__v -password")
+        .select("-__v -password")
         .populate("books");
         
         return userData;
@@ -66,16 +65,18 @@ const resolvers = {
     saveBook: async (parent, { bookInfo }, context) => {
        // Check if there's an authenticated user in the context
       if (context.user) {
-        const updatedUser = await User.findOneAndUpdate( 
+        const newUser = await User.findOneAndUpdate( 
           // Find the user by their _id and update their data
           { _id: context.user._id },
           // $push operation adds the provided bookInfo to the savedBooks array
-          { $push: {savedBooks: bookInfo } },
+          { $addToSet: {savedBooks: bookInfo } },
           // new: true ensures that the updated user is returned as the result
           { new: true}
-        );
-        return updatedUser;
+        )
+        .populate("books");
+      return newUser;
       }
+      throw new AuthenticationError("You must be logged in to save books!");
         // Return the updated user with the added book
     
     },
