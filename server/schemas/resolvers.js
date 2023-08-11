@@ -1,16 +1,20 @@
-const { Book, User } = require('../models');
-const { signToken, AuthenticationError } = require('../utils/auth');
+const { User } = require('../models');
+const { signToken,  } = require('../utils/auth');
+const { AuthenticationError } = require('apollo-server-express')
 
 const resolvers = {
   Query: {
-    me: async (parent, args, context) => {
+    me: async (parent, { args }, context) => {
       if (context.user) {
-        const userData = await User.findOne({ _id: context.user._id }).select(
-          "-__v -password"
-        );
+        const userData = await User
+        .findOne({ _id: context.user._id })
+        .select(
+          "-__v -password")
+        .populate("books");
+        
         return userData;
-      }
-      throw new AuthenticationError;
+      };
+      throw new AuthenticationError("You must be logged in to access data");
       
     },
     // users: async () => {
@@ -39,19 +43,18 @@ const resolvers = {
     // Login a user, sign a token, and send it back 
     login: async (parent, { email, password }) => {
       const user = await User.findOne({ email });
-      
+
       if (!user) {
-        throw AuthenticationError;
-      }
+        throw new AuthenticationErro('Invalid email or password');
+      };
       const correctPw = await user.isCorrectPassword(password);
-      
       if (!correctPw) {
-        throw AuthenticationError;
-      }
+        throw new AuthenticationError('Invalid email or password');;
+      };
 
       const token = signToken(user);
-
       return { token, user };
+
     },
 
 // Save a book to user's savedBooks 
