@@ -65,7 +65,7 @@ const resolvers = {
     saveBook: async (parent, { bookInfo }, context) => {
        // Check if there's an authenticated user in the context
       if (context.user) {
-        const newUser = await User.findOneAndUpdate( 
+        const updatedUser = await User.findOneAndUpdate( 
           // Find the user by their _id and update their data
           { _id: context.user._id },
           // $push operation adds the provided bookInfo to the savedBooks array
@@ -74,7 +74,7 @@ const resolvers = {
           { new: true}
         )
         .populate("books");
-      return newUser;
+      return updatedUser;
       }
       throw new AuthenticationError("You must be logged in to save books!");
         // Return the updated user with the added book

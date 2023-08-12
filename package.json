@@ -12,12 +12,16 @@
     "start": "node server/server.js --ignore client",
     "develop": "concurrently \"cd server && npm run watch\" \"cd client && npm start\"",
     "install": "cd server && npm i && cd ../client && npm i",
-
     "build": "cd client && npm run build"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "dependencies": {
+    "apollo-server-express": "^3.11.1",
+    "express": "^4.17.2",
+    "graphql": "^15.8.0"
+  },
   "devDependencies": {
     "concurrently": "^8.2.0"
   }
