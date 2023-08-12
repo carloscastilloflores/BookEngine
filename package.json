@@ -3,11 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "main": "server/server.js",
-  "proxy": {
-    "/auth/google": {
-      "target": "http://127.0.0.1:3001"
-    }
-  },
   "scripts": {
     "start": "node server/server.js --ignore client",
     "develop": "concurrently \"cd server && npm run watch\" \"cd client && npm start\"",
@@ -17,13 +12,6 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "apollo-server-express": "^3.11.1",
-    "bcrypt": "^5.1.0",
-    "express": "^4.17.2",
-    "graphql": "^15.8.0",
-    "dotenv": "^16.0.3"
-  },
   "devDependencies": {
     "concurrently": "^8.2.0"
   }
