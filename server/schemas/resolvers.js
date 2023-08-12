@@ -9,7 +9,7 @@ const resolvers = {
         const userData = await User
         .findOne({ _id: context.user._id })
         .select("-__v -password")
-        .populate("books");
+        .populate("savedBooks");
         
         return userData;
       };
@@ -69,17 +69,17 @@ const resolvers = {
           // Find the user by their _id and update their data
           { _id: context.user._id },
           // $push operation adds the provided bookInfo to the savedBooks array
-          { $addToSet: {savedBooks: bookInfo } },
+          { $push: {savedBooks: bookInfo } },
           // new: true ensures that the updated user is returned as the result
-          { new: true}
+          { new: true},
         )
-        .populate("books");
+        .populate("savedBooks");
       return updatedUser;
-      }
+      };
       throw new AuthenticationError("You must be logged in to save books!");
         // Return the updated user with the added book
-    
     },
+
     removeBook: async (parent, { bookId }, context) => {
       if (context.user) {
         const updatedUser = await User.findOneAndUpdate(

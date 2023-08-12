@@ -39,7 +39,6 @@ export const SAVE_BOOK = gql `
         description 
         title
         link 
-        
       }
     }
   }
